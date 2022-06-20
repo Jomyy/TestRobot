@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class Main {
     public static Boolean[]before ={ false,false} ;
-    public static Double wheelBefore = 0d;
+    public static Integer wheelBefore = 0;
     public static Integer[] screenSize = {GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds().width,GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds().height};
     public static Integer[] otherScreenSize = {0,0};
     public static void main(String[] args){
@@ -63,7 +63,7 @@ public class Main {
 
                             }
                             if(request.mouseWheel != wheelBefore){
-                                robot.mouseWheel(wheelBefore.intValue() - request.mouseWheel.intValue());
+                                robot.mouseWheel(wheelBefore - request.mouseWheel);
                             }
                             before = request.mouseClick;
                             wheelBefore = request.mouseWheel;
@@ -128,9 +128,11 @@ public class Main {
 
                     @Override
                     public void mouseWheelMoved(MouseWheelEvent e) {
-                        infos.mouseWheel = e.getPreciseWheelRotation();
+                        infos.mouseWheel = e.getWheelRotation();
+                        System.out.println("Hallo");
                         super.mouseWheelMoved(e);
                     }
+
                 };
                 JFrame frame = new JFrame("Chat Server");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
