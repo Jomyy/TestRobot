@@ -45,7 +45,7 @@ public class Main {
 
                             InputInfos request = (InputInfos) object;
                             robot.mouseMove(map(request.mousePos[0],0,screenSize[0],0,otherScreenSize[0]),map(request.mousePos[1],0,screenSize[1],0,otherScreenSize[1]));
-
+                            System.out.println(map(request.mousePos[0],0,screenSize[0],0,otherScreenSize[0]));
                             if(request.mouseClick[0] && !before[0]){
                                 robot1.mousePress(InputEvent.BUTTON1_MASK);
 
