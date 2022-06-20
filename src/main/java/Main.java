@@ -63,9 +63,8 @@ public class Main {
                                 robot1.mouseRelease(InputEvent.BUTTON2_MASK);
 
                             }
-                            if(request.mouseWheel != wheelBefore){
-                                robot.mouseWheel(request.mouseWheel.intValue());
-                            }
+                            robot.mouseWheel(request.mouseWheel.intValue());
+
                             before = request.mouseClick;
                             wheelBefore = request.mouseWheel;
                         }
