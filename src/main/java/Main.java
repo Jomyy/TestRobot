@@ -6,10 +6,7 @@ import com.esotericsoftware.kryonet.Server;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.Objects;
 
 public class Main {
@@ -20,6 +17,7 @@ public class Main {
                 Server server = new Server();
                 Kryo kryo = server.getKryo();
                 kryo.register(Integer[].class);
+                kryo.register(Boolean[].class);
                 server.start();
                 server.bind(54555, 54777);
                 Robot robot = new Robot();
@@ -30,8 +28,22 @@ public class Main {
                             robot.mouseMove(request[0],request[1]);
                             System.out.println(request[1]);
                         }
+                        if(object instanceof Boolean[]){
+                            Boolean[] request = (Boolean[]) object;
+                            if(request[0]){
+                                robot.mousePress(0);
+                                robot.mouseRelease(0);
+                            }
+                            if(request[1]){
+                                robot.mousePress(1);
+                                robot.mouseRelease(1);
+
+                            }
+
+                        }
                     }
                 });
+
                 JFrame frame = new JFrame("Chat Server");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.addWindowListener(new WindowAdapter() {
@@ -54,9 +66,33 @@ public class Main {
                 Client client = new Client();
                 Kryo kryo = client.getKryo();
                 kryo.register(Integer[].class);
+                kryo.register(Boolean[].class);
                 client.start();
                 client.connect(5000, "192.168.0.165", 54555, 54777);
                 Robot robot = new Robot();
+                MouseAdapter adapter = new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        if(e.getButton() == 0){
+                            client.sendUDP(new Boolean[]{true,false});
+                        }
+                        if(e.getButton() == 1){
+                            client.sendUDP(new Boolean[]{false,true});
+                        }
+                        super.mousePressed(e);
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        if(e.getButton() == 0){
+                            client.sendUDP(new Boolean[]{false,false});
+                        }
+                        if(e.getButton() == 1){
+                            client.sendUDP(new Boolean[]{false,false});
+                        }
+                        super.mouseReleased(e);
+                    }
+                };
                 while (true){
                     try{
                         Thread.sleep(10);
