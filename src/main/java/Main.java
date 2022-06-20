@@ -20,13 +20,20 @@ public class Main {
                 Kryo kryo = server.getKryo();
 
                 kryo.register(InputInfos.class);
-
+                kryo.register(Boolean[].class);
+                kryo.register(Integer[].class);
                 server.start();
                 server.bind(54555, 54777);
                 Robot robot = new Robot();
                 server.addListener(new Listener() {
-                    public void received (Connection connection, Object object) {
+                    @Override
+                    public void connected(Connection connection) {
                         System.out.println("INPU");
+                        super.connected(connection);
+                    }
+
+                    public void received (Connection connection, Object object) {
+
                         if (object instanceof InputInfos) {
 
                             InputInfos request = (InputInfos) object;
@@ -77,6 +84,8 @@ public class Main {
                 Client client = new Client();
                 Kryo kryo = client.getKryo();
                 kryo.register(InputInfos.class);
+                kryo.register(Boolean[].class);
+                kryo.register(Integer[].class);
 
                 client.start();
                 client.connect(5000, "192.168.0.165", 54555, 54777);
