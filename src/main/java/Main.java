@@ -89,7 +89,7 @@ public class Main {
                 kryo.register(Integer[].class);
 
                 client.start();
-                client.connect(5000, "192.168.0.165", 54555, 54777);
+                client.connect(5000, "192.168.0.173", 54555, 54777);
 
                 MouseAdapter adapter = new MouseAdapter() {
                     @Override
