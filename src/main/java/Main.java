@@ -12,7 +12,8 @@ import java.util.Objects;
 
 public class Main {
     public static Boolean[]before ={ false,false} ;
-    public static Integer[] screenSize = {GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth(),GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight()};
+
+    public static Integer[] screenSize = {GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds().width,GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds().height};
     public static Integer[] otherScreenSize = {0,0};
     public static void main(String[] args){
         System.out.println(args[0]);
