@@ -25,6 +25,7 @@ public class Main {
                 server.start();
                 server.bind(54555, 54777);
                 Robot robot = new Robot();
+                Robot robot1 = new Robot();
                 server.addListener(new Listener() {
                     @Override
                     public void connected(Connection connection) {
@@ -40,19 +41,19 @@ public class Main {
                             robot.mouseMove(request.mousePos[0],request.mousePos[1]);
 
                             if(request.mouseClick[0]){
-                                robot.mousePress(InputEvent.BUTTON1_MASK);
+                                robot1.mousePress(InputEvent.BUTTON1_MASK);
 
                             }
                             if(!request.mouseClick[0] && before[0]){
-                                robot.mouseRelease(InputEvent.BUTTON1_MASK);
+                                robot1.mouseRelease(InputEvent.BUTTON1_MASK);
                             }
                             if(request.mouseClick[1]){
-                                robot.mousePress(InputEvent.BUTTON2_MASK);
+                                robot1.mousePress(InputEvent.BUTTON2_MASK);
 
 
                             }
                             if(!request.mouseClick[1] && before[1]){
-                                robot.mouseRelease(InputEvent.BUTTON2_MASK);
+                                robot1.mouseRelease(InputEvent.BUTTON2_MASK);
 
                             }
                             before = request.mouseClick;
@@ -132,7 +133,7 @@ public class Main {
                         infos.mousePos[0] = info.x;
                         infos.mousePos[1] = info.y;
                         System.out.println(info.x);
-                        client.sendUDP(infos);
+                        client.sendTCP(infos);
 
                     }catch(Exception e){
 
