@@ -73,27 +73,17 @@ public class Main {
                 Robot robot = new Robot();
                 MouseAdapter adapter = new MouseAdapter() {
                     @Override
-                    public void mousePressed(MouseEvent e) {
+                    public void mouseClicked(MouseEvent e) {
                         if(e.getButton() == 0){
                             client.sendUDP(new Boolean[]{true,false});
                         }
                         if(e.getButton() == 1){
                             client.sendUDP(new Boolean[]{false,true});
                         }
-                        super.mousePressed(e);
+                        super.mouseClicked(e);
                     }
 
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
-                        if(e.getButton() == 0){
-                            System.out.println("hallo");
-                            client.sendUDP(new Boolean[]{false,false});
-                        }
-                        if(e.getButton() == 1){
-                            client.sendUDP(new Boolean[]{false,false});
-                        }
-                        super.mouseReleased(e);
-                    }
+
                 };
                 JFrame frame = new JFrame("Chat Server");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
