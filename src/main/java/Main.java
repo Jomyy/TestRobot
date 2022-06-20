@@ -40,14 +40,14 @@ public class Main {
                             InputInfos request = (InputInfos) object;
                             robot.mouseMove(request.mousePos[0],request.mousePos[1]);
 
-                            if(request.mouseClick[0]){
+                            if(request.mouseClick[0] && !before[0]){
                                 robot1.mousePress(InputEvent.BUTTON1_MASK);
 
                             }
                             if(!request.mouseClick[0] && before[0]){
                                 robot1.mouseRelease(InputEvent.BUTTON1_MASK);
                             }
-                            if(request.mouseClick[1]){
+                            if(request.mouseClick[1] && !before[1]){
                                 robot1.mousePress(InputEvent.BUTTON2_MASK);
 
 
