@@ -109,7 +109,7 @@ public class Main {
                 frame.setVisible(true);
                 while (true){
                     try{
-                        Thread.sleep(10);
+                        Thread.sleep(1);
                         Point info = MouseInfo.getPointerInfo().getLocation();
 
                         client.sendUDP(new Integer[]{info.x, info.y});
