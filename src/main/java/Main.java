@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class Main {
     public static Boolean[]before ={ false,false} ;
-
+    public static Double wheelBefore = 0d;
     public static Integer[] screenSize = {GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds().width,GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds().height};
     public static Integer[] otherScreenSize = {0,0};
     public static void main(String[] args){
@@ -62,10 +62,11 @@ public class Main {
                                 robot1.mouseRelease(InputEvent.BUTTON2_MASK);
 
                             }
-                            if(request.mouseWheel != 0){
-                                robot.mouseWheel(request.mouseWheel);
+                            if(request.mouseWheel != wheelBefore){
+                                robot.mouseWheel(wheelBefore.intValue() - request.mouseWheel.intValue());
                             }
                             before = request.mouseClick;
+                            wheelBefore = request.mouseWheel;
                         }
                     }
                 });
@@ -127,7 +128,7 @@ public class Main {
 
                     @Override
                     public void mouseWheelMoved(MouseWheelEvent e) {
-                        infos.mouseWheel = e.getUnitsToScroll();
+                        infos.mouseWheel = e.getPreciseWheelRotation();
                         super.mouseWheelMoved(e);
                     }
                 };
