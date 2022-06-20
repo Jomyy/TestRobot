@@ -63,7 +63,7 @@ public class Main {
 
                             }
                             if(request.mouseWheel != wheelBefore){
-                                robot.mouseWheel(wheelBefore - request.mouseWheel);
+                                robot.mouseWheel( request.mouseWheel);
                             }
                             before = request.mouseClick;
                             wheelBefore = request.mouseWheel;
@@ -142,6 +142,7 @@ public class Main {
                     }
                 });
                 frame.addMouseListener(adapter);
+                frame.addMouseWheelListener(adapter);
                 frame.getContentPane().add(new JLabel("Close to stop the chat server."));
                 frame.setSize(320, 200);
                 frame.setLocationRelativeTo(null);
