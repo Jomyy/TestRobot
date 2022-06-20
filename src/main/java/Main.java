@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class Main {
     public static Boolean[]before ={ false,false} ;
-    public static Integer wheelBefore = 0;
+    public static Double wheelBefore = 0d;
     public static Integer[] screenSize = {GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds().width,GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds().height};
     public static Integer[] otherScreenSize = {0,0};
     public static void main(String[] args){
@@ -26,6 +26,7 @@ public class Main {
                 kryo.register(Boolean[].class);
                 kryo.register(Integer[].class);
                 kryo.register(Integer.class);
+                kryo.register(Double.class);
 
                 server.start();
                 server.bind(54555, 54777);
@@ -63,7 +64,7 @@ public class Main {
 
                             }
                             if(request.mouseWheel != wheelBefore){
-                                robot.mouseWheel( request.mouseWheel);
+                                robot.mouseWheel(request.mouseWheel.intValue());
                             }
                             before = request.mouseClick;
                             wheelBefore = request.mouseWheel;
@@ -99,6 +100,7 @@ public class Main {
                 kryo.register(Boolean[].class);
                 kryo.register(Integer[].class);
                 kryo.register(Integer.class);
+                kryo.register(Double.class);
 
                 client.start();
                 client.connect(5000, "192.168.0.173", 54555, 54777);
@@ -128,7 +130,7 @@ public class Main {
 
                     @Override
                     public void mouseWheelMoved(MouseWheelEvent e) {
-                        infos.mouseWheel = e.getWheelRotation();
+                        infos.mouseWheel = e.getPreciseWheelRotation();
                         System.out.println("Hallo");
                         super.mouseWheelMoved(e);
                     }
