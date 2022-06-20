@@ -117,6 +117,7 @@ public class Main {
                         Point info = MouseInfo.getPointerInfo().getLocation();
                         infos.mousePos[0] = info.x;
                         infos.mousePos[1] = info.y;
+                        System.out.println(info.x);
                         client.sendUDP(infos);
 
                     }catch(Exception e){
