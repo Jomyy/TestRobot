@@ -3,6 +3,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import data.InputInfos;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,37 +17,33 @@ public class Main {
             try {
                 Server server = new Server();
                 Kryo kryo = server.getKryo();
-                kryo.register(Integer[].class);
-                kryo.register(Boolean[].class);
+                kryo.register(InputInfos.class);
+
                 server.start();
                 server.bind(54555, 54777);
                 Robot robot = new Robot();
                 server.addListener(new Listener() {
                     public void received (Connection connection, Object object) {
-                        if (object instanceof Integer[]) {
-                            Integer[] request = (Integer[])object;
-                            robot.mouseMove(request[0],request[1]);
 
-                        }
-                        if(object instanceof Boolean[]){
-                            Boolean[] request = (Boolean[]) object;
-                            if(request[0]){
+                        if (object instanceof InputInfos) {
+                            InputInfos request = (InputInfos) object;
+                            robot.mouseMove(request.mousePos[0],request.mousePos[1]);
+                            if(request.mouseClick[0]){
                                 robot.mousePress(InputEvent.BUTTON1_MASK);
 
                             }
-                            if(!request[0]){
+                            if(!request.mouseClick[0]){
                                 robot.mouseRelease(InputEvent.BUTTON1_MASK);
                             }
-                            if(request[1]){
+                            if(request.mouseClick[1]){
                                 robot.mousePress(InputEvent.BUTTON2_MASK);
 
 
                             }
-                            if(!request[1]){
+                            if(!request.mouseClick[1]){
                                 robot.mouseRelease(InputEvent.BUTTON2_MASK);
 
                             }
-
                         }
                     }
                 });
@@ -70,11 +67,12 @@ public class Main {
 
         }else{
             try{
+                InputInfos infos = new InputInfos();
+
                 Client client = new Client();
                 Kryo kryo = client.getKryo();
-                kryo.register(Integer[].class);
-                kryo.register(Boolean[].class);
-                Boolean[] mousestate = {false,false};
+                kryo.register(InputInfos.class);
+
                 client.start();
                 client.connect(5000, "192.168.0.165", 54555, 54777);
                 Robot robot = new Robot();
@@ -82,10 +80,10 @@ public class Main {
                     @Override
                     public void mousePressed(MouseEvent e) {
                         if(e.getButton() == 1){
-                            mousestate[0] = true;
+                            infos.mouseClick[0] = true;
                         }
                         if(e.getButton() == 2){
-                            mousestate[1] = true;
+                            infos.mouseClick[1] = true;
                         }
                         super.mousePressed(e);
                     }
@@ -93,10 +91,10 @@ public class Main {
                     @Override
                     public void mouseReleased(MouseEvent e) {
                         if(e.getButton() == 1){
-                            mousestate[0] = false;
+                            infos.mouseClick[0] = false;
                         }
                         if(e.getButton() == 2){
-                            mousestate[1] = false;
+                            infos.mouseClick[1] = false;
                         }
                         super.mouseReleased(e);
                     }
@@ -117,8 +115,10 @@ public class Main {
                     try{
                         Thread.sleep(1);
                         Point info = MouseInfo.getPointerInfo().getLocation();
-                        client.sendUDP(mousestate);
-                        client.sendUDP(new Integer[]{info.x, info.y});
+                        infos.mousePos[0] = info.x;
+                        infos.mousePos[1] = info.y;
+                        client.sendUDP(infos);
+
                     }catch(Exception e){
 
                     }
