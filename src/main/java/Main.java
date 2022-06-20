@@ -11,12 +11,14 @@ import java.awt.event.*;
 import java.util.Objects;
 
 public class Main {
+    public static Boolean[]before ={ false,false} ;
     public static void main(String[] args){
         System.out.println(args[0]);
         if(Objects.equals(args[0], "server")){
             try {
                 Server server = new Server();
                 Kryo kryo = server.getKryo();
+
                 kryo.register(InputInfos.class);
 
                 server.start();
@@ -24,15 +26,17 @@ public class Main {
                 Robot robot = new Robot();
                 server.addListener(new Listener() {
                     public void received (Connection connection, Object object) {
-
+                        System.out.println("INPU");
                         if (object instanceof InputInfos) {
+
                             InputInfos request = (InputInfos) object;
                             robot.mouseMove(request.mousePos[0],request.mousePos[1]);
+
                             if(request.mouseClick[0]){
                                 robot.mousePress(InputEvent.BUTTON1_MASK);
 
                             }
-                            if(!request.mouseClick[0]){
+                            if(!request.mouseClick[0] && before[0]){
                                 robot.mouseRelease(InputEvent.BUTTON1_MASK);
                             }
                             if(request.mouseClick[1]){
@@ -40,10 +44,11 @@ public class Main {
 
 
                             }
-                            if(!request.mouseClick[1]){
+                            if(!request.mouseClick[1] && before[1]){
                                 robot.mouseRelease(InputEvent.BUTTON2_MASK);
 
                             }
+                            before = request.mouseClick;
                         }
                     }
                 });
@@ -75,7 +80,7 @@ public class Main {
 
                 client.start();
                 client.connect(5000, "192.168.0.165", 54555, 54777);
-                Robot robot = new Robot();
+
                 MouseAdapter adapter = new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
