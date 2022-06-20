@@ -25,6 +25,8 @@ public class Main {
                 kryo.register(InputInfos.class);
                 kryo.register(Boolean[].class);
                 kryo.register(Integer[].class);
+                kryo.register(Integer.class);
+
                 server.start();
                 server.bind(54555, 54777);
                 Robot robot = new Robot();
@@ -33,7 +35,6 @@ public class Main {
                 server.addListener(new Listener() {
                     @Override
                     public void connected(Connection connection) {
-                        System.out.println("INPU");
                         super.connected(connection);
                     }
 
@@ -45,7 +46,6 @@ public class Main {
 
                             InputInfos request = (InputInfos) object;
                             robot.mouseMove(map(request.mousePos[0],0,otherScreenSize[0],0,1920),map(request.mousePos[1],0,otherScreenSize[1],0,1080));
-                            System.out.println(map(request.mousePos[0],0,screenSize[0],0,otherScreenSize[0]));
                             if(request.mouseClick[0] && !before[0]){
                                 robot1.mousePress(InputEvent.BUTTON1_MASK);
 
@@ -61,6 +61,9 @@ public class Main {
                             if(!request.mouseClick[1] && before[1]){
                                 robot1.mouseRelease(InputEvent.BUTTON2_MASK);
 
+                            }
+                            if(request.mouseWheel != 0){
+                                robot.mouseWheel(request.mouseWheel);
                             }
                             before = request.mouseClick;
                         }
@@ -94,6 +97,7 @@ public class Main {
                 kryo.register(InputInfos.class);
                 kryo.register(Boolean[].class);
                 kryo.register(Integer[].class);
+                kryo.register(Integer.class);
 
                 client.start();
                 client.connect(5000, "192.168.0.173", 54555, 54777);
@@ -119,6 +123,12 @@ public class Main {
                             infos.mouseClick[1] = false;
                         }
                         super.mouseReleased(e);
+                    }
+
+                    @Override
+                    public void mouseWheelMoved(MouseWheelEvent e) {
+                        infos.mouseWheel = e.getUnitsToScroll();
+                        super.mouseWheelMoved(e);
                     }
                 };
                 JFrame frame = new JFrame("Chat Server");
