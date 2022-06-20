@@ -31,12 +31,12 @@ public class Main {
                         if(object instanceof Boolean[]){
                             Boolean[] request = (Boolean[]) object;
                             if(request[0]){
-                                robot.mousePress(0);
-                                robot.mouseRelease(0);
+                                robot.mousePress(InputEvent.BUTTON2_MASK);
+                                robot.mouseRelease(InputEvent.BUTTON2_MASK);
                             }
                             if(request[1]){
-                                robot.mousePress(1);
-                                robot.mouseRelease(1);
+                                robot.mousePress(InputEvent.BUTTON1_MASK);
+                                robot.mouseRelease(InputEvent.BUTTON1_MASK);
 
                             }
 
@@ -74,10 +74,10 @@ public class Main {
                 MouseAdapter adapter = new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        if(e.getButton() == 0){
+                        if(e.getButton() == 1){
                             client.sendUDP(new Boolean[]{true,false});
                         }
-                        if(e.getButton() == 1){
+                        if(e.getButton() == 2){
                             client.sendUDP(new Boolean[]{false,true});
                         }
                         super.mouseClicked(e);
