@@ -67,6 +67,7 @@ public class Main {
                 Kryo kryo = client.getKryo();
                 kryo.register(Integer[].class);
                 kryo.register(Boolean[].class);
+
                 client.start();
                 client.connect(5000, "192.168.0.165", 54555, 54777);
                 Robot robot = new Robot();
@@ -85,6 +86,7 @@ public class Main {
                     @Override
                     public void mouseReleased(MouseEvent e) {
                         if(e.getButton() == 0){
+                            System.out.println("hallo");
                             client.sendUDP(new Boolean[]{false,false});
                         }
                         if(e.getButton() == 1){
@@ -93,6 +95,18 @@ public class Main {
                         super.mouseReleased(e);
                     }
                 };
+                JFrame frame = new JFrame("Chat Server");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.addWindowListener(new WindowAdapter() {
+                    public void windowClosed (WindowEvent evt) {
+                        client.stop();
+                    }
+                });
+                frame.addMouseListener(adapter);
+                frame.getContentPane().add(new JLabel("Close to stop the chat server."));
+                frame.setSize(320, 200);
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
                 while (true){
                     try{
                         Thread.sleep(10);
