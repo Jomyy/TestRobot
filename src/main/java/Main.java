@@ -22,10 +22,12 @@ public class Main {
                 kryo.register(Integer[].class);
                 server.start();
                 server.bind(54555, 54777);
+                Robot robot = new Robot();
                 server.addListener(new Listener() {
                     public void received (Connection connection, Object object) {
                         if (object instanceof Integer[]) {
                             Integer[] request = (Integer[])object;
+                            robot.mouseMove(request[0],request[1]);
                             System.out.println(request[1]);
                         }
                     }
@@ -54,12 +56,13 @@ public class Main {
                 kryo.register(Integer[].class);
                 client.start();
                 client.connect(5000, "192.168.0.165", 54555, 54777);
-
+                Robot robot = new Robot();
                 while (true){
                     try{
                         Thread.sleep(10);
-                        Integer[] pos = {1,1};
-                        client.sendUDP(pos);
+                        Point info = MouseInfo.getPointerInfo().getLocation();
+
+                        client.sendUDP(new Integer[]{info.x, info.y});
                     }catch(Exception e){
 
                     }
