@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class Main {
     public static Boolean[]before ={ false,false} ;
-    public static Integer[] screenSize = {Toolkit.getDefaultToolkit().getScreenSize().width,Toolkit.getDefaultToolkit().getScreenSize().height};
+    public static Integer[] screenSize = {GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth(),GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight()};
     public static Integer[] otherScreenSize = {0,0};
     public static void main(String[] args){
         System.out.println(args[0]);
@@ -157,6 +157,6 @@ public class Main {
 
     }
     public static int map(int x,int in_min,int in_max,int out_min,int out_max){
-        return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min) * 2;
+        return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
     }
 }
